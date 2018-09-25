@@ -3,6 +3,7 @@ import fire from "../fire";
 
 class ShowQuiz extends Component {
   state = {
+    score: 0,
     result: [],
     loaded: false
   };
@@ -22,16 +23,19 @@ class ShowQuiz extends Component {
   }
 
   renderQuiz = () => {
+    let quiz = this.props.sendQuiz;
     const { result } = this.state;
+
     return (
       <div className="container">
         {result.map((val, i) => {
           return (
-            <div>
+            <div key={quiz + "question" + i}>
               <h4 className="display-4">{val.question}</h4>
               <div className="form-check">
                 <label className="form-check-label">
                   <input
+                    onClick={e => this.handleCheck(e, i)}
                     type="radio"
                     className="form-check-input"
                     value={val.answers.ans1}
@@ -43,6 +47,7 @@ class ShowQuiz extends Component {
               <div className="form-check">
                 <label className="form-check-label">
                   <input
+                    onClick={e => this.handleCheck(e, i)}
                     type="radio"
                     className="form-check-input"
                     value={val.answers.ans2}
@@ -54,6 +59,7 @@ class ShowQuiz extends Component {
               <div className="form-check">
                 <label className="form-check-label">
                   <input
+                    onClick={e => this.handleCheck(e, i)}
                     type="radio"
                     className="form-check-input"
                     value={val.answers.ans3}
@@ -65,6 +71,7 @@ class ShowQuiz extends Component {
               <div className="form-check">
                 <label className="form-check-label">
                   <input
+                    onClick={e => this.handleCheck(e, i)}
                     type="radio"
                     className="form-check-input"
                     value={val.answers.ans4}
@@ -80,7 +87,22 @@ class ShowQuiz extends Component {
     );
   };
 
-  componentWillMount() {
+  handleCheck = (e, i) => {
+    let { result, score } = this.state;
+
+    let correctAns = result[i].correctAns;
+    let selectedVal = e.target.value;
+
+    if (selectedVal === correctAns) {
+      score++;
+      this.setState({
+        score
+      });
+    } else {
+    }
+  };
+
+  componentDidMount() {
     let quiz = this.props.sendQuiz;
     let subQuiz = this.props.sendSub;
     let { result } = this.state;
@@ -93,8 +115,6 @@ class ShowQuiz extends Component {
         result,
         loaded: true
       });
-
-      console.log("state", result);
     });
   }
 }

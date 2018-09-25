@@ -10,7 +10,6 @@ class Quiz extends Component {
       quizName: "",
       showList: false,
       loaded: false,
-      listData: [],
       listName: [],
       sendQuiz: "",
       sendSub: "",
@@ -89,7 +88,7 @@ class Quiz extends Component {
     // console.log("clicked on", name);
   };
 
-  componentWillMount() {
+  componentDidMount() {
     const { listName } = this.state;
     let dataRef = fire.database().ref(`myQuizFolder`);
     dataRef.on("child_added", snapshot => {

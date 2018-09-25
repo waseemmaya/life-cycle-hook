@@ -46,7 +46,7 @@ class Quiz extends Component {
     this.props.showQuiz(quizName, subName);
   };
 
-  componentWillMount() {
+  componentDidMount() {
     const { quizName } = this.props;
     let { subList } = this.state;
 
