@@ -1,16 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Quiz from './Quiz';
-import registerServiceWorker from './registerServiceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
+import Registration from "./Registration";
+import registerServiceWorker from "./registerServiceWorker";
 
 // import 'antd/dist/antd.css';
-// import '../node_modules/grommet-css'
+import "../node_modules/grommet-css";
 
-
-ReactDOM.render(<Quiz />, document.getElementById('root'));
+ReactDOM.render(<Registration />, document.getElementById("root"));
 registerServiceWorker();
 
-
 if (module.hot) {
-    module.hot.accept();
-    }
+  module.hot.accept();
+}

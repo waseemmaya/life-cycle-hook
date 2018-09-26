@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import fire from "../fire";
+import swal from "sweetalert";
 
 class ShowQuiz extends Component {
   state = {
     score: 0,
     result: [],
+    allAns: [],
     loaded: false
   };
   render() {
@@ -14,7 +16,7 @@ class ShowQuiz extends Component {
         {loaded && (
           <div>
             <h1>Panacloud Quiz App</h1>
-            {this.renderQuiz()}
+            <form>{this.renderQuiz()}</form>
           </div>
         )}
         {!loaded && <h1>Loading</h1>}
@@ -83,23 +85,40 @@ class ShowQuiz extends Component {
             </div>
           );
         })}
+        <input onClick={this.handleSubmit} type="submit" value="Submit" />
       </div>
     );
   };
 
-  handleCheck = (e, i) => {
-    let { result, score } = this.state;
+  handleSubmit = e => {
+    e.preventDefault();
+    console.log("didnt refresh");
+    const { allAns } = this.state;
+    var { score, result } = this.state;
+    console.log("result", result);
 
-    let correctAns = result[i].correctAns;
-    let selectedVal = e.target.value;
-
-    if (selectedVal === correctAns) {
-      score++;
-      this.setState({
-        score
-      });
-    } else {
+    for (let i = 0; i < result.length; i++) {
+      let correctAns = result[i].correctAns;
+      console.log("correct", correctAns);
+      if (allAns[i] === correctAns) {
+        score++;
+        this.setState({
+          score
+        });
+      }
     }
+
+    let final = `Your Score is ${score}/${result.length}`;
+    swal(final);
+    this.setState({
+      score: 0
+    });
+  };
+
+  handleCheck = (e, i) => {
+    var { allAns } = this.state;
+    let getVal = e.target.value;
+    allAns[i] = getVal;
   };
 
   componentDidMount() {
@@ -108,8 +127,6 @@ class ShowQuiz extends Component {
     let { result } = this.state;
     let subRef = fire.database().ref(`myQuizFolder/${quiz}/${subQuiz}`);
     subRef.on("child_added", snapshot => {
-      // console.log("val", val.val());
-
       result.push(snapshot.val());
       this.setState({
         result,
